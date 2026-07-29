@@ -35,6 +35,13 @@
         "portable"
       ]
     },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.utilities"
+    },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
