@@ -9,7 +9,36 @@
     "dev:backend": "python -m uvicorn backend.main:app --reload --port 8000",
     "dev": "concurrently -n \"react,electron,backend\" -c \"blue,green,magenta\" \"npm run dev:react\" \"wait-on http://localhost:5173 && npm run dev:electron\" \"npm run dev:backend\"",
     "build": "tsc --skipLibCheck && vite build && tsc electron/main.ts electron/preload.ts --outDir dist-electron --skipLibCheck",
+    "dist": "npm run build && electron-builder",
     "preview": "vite preview"
+  },
+  "build": {
+    "appId": "com.interviewassistant.ai",
+    "productName": "Interview Assistant AI",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "backend/build_python/dist/backend",
+        "to": "backend"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "dependencies": {
     "lucide-react": "^0.395.0",
@@ -24,6 +53,7 @@
     "autoprefixer": "^10.4.19",
     "concurrently": "^8.2.2",
     "electron": "^31.0.0",
+    "electron-builder": "^26.15.3",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.4.5",

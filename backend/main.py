@@ -1,7 +1,15 @@
+import sys
 import os
 import json
 import tempfile
 import io
+
+# Fix sys.stdout / sys.stderr for PyInstaller --noconsole mode
+if getattr(sys, 'frozen', False):
+    if sys.stdout is None:
+        sys.stdout = io.StringIO()
+    if sys.stderr is None:
+        sys.stderr = io.StringIO()
 from typing import List, Optional, Any, Union
 from fastapi import FastAPI, UploadFile, File, Header, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -221,4 +229,7 @@ async def parse_document(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    if getattr(sys, 'frozen', False):
+        uvicorn.run(app, host="127.0.0.1", port=8000, log_config=None)
+    else:
+        uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

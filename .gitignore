@@ -10,6 +10,7 @@ release/
 # Python Virtual Environment & Cache
 backend/venv/
 backend/.venv/
+backend/build_python/
 **/__pycache__/
 *.pyc
 

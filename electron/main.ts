@@ -1,8 +1,30 @@
 import { app, BrowserWindow, ipcMain, globalShortcut, desktopCapturer } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
+import { spawn, ChildProcess } from 'child_process';
 
 let mainWindow: BrowserWindow | null = null;
+let pyProcess: ChildProcess | null = null;
+
+function startPyBackendProcess() {
+  const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
+  if (!isDev) {
+    const backendExecutable = path.join(process.resourcesPath, 'backend', 'backend.exe');
+    if (fs.existsSync(backendExecutable)) {
+      console.log('Starting packaged Python backend:', backendExecutable);
+      pyProcess = spawn(backendExecutable, [], {
+        cwd: path.dirname(backendExecutable),
+        windowsHide: true,
+      });
+
+      pyProcess.stdout?.on('data', (data) => console.log(`[backend.exe stdout]: ${data}`));
+      pyProcess.stderr?.on('data', (data) => console.error(`[backend.exe stderr]: ${data}`));
+      pyProcess.on('close', (code) => console.log(`[backend.exe] exited with code ${code}`));
+    } else {
+      console.error('Backend executable not found at:', backendExecutable);
+    }
+  }
+}
 
 const settingsPath = path.join(app.getPath('userData'), 'settings.json');
 
@@ -159,6 +181,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  startPyBackendProcess();
   createWindow();
 
   // Register Alt+Shift+H shortcut to hide/show the window instantly
@@ -190,7 +213,18 @@ app.whenReady().then(() => {
   });
 });
 
+app.on('will-quit', () => {
+  if (pyProcess) {
+    pyProcess.kill();
+    pyProcess = null;
+  }
+});
+
 app.on('window-all-closed', () => {
+  if (pyProcess) {
+    pyProcess.kill();
+    pyProcess = null;
+  }
   if (process.platform !== 'darwin') {
     app.quit();
   }
