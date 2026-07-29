@@ -9,7 +9,8 @@ let pyProcess: ChildProcess | null = null;
 function startPyBackendProcess() {
   const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
   if (!isDev) {
-    const backendExecutable = path.join(process.resourcesPath, 'backend', 'backend.exe');
+    const exeName = process.platform === 'win32' ? 'backend.exe' : 'backend';
+    const backendExecutable = path.join(process.resourcesPath, 'backend', exeName);
     if (fs.existsSync(backendExecutable)) {
       console.log('Starting packaged Python backend:', backendExecutable);
       pyProcess = spawn(backendExecutable, [], {
@@ -17,14 +18,15 @@ function startPyBackendProcess() {
         windowsHide: true,
       });
 
-      pyProcess.stdout?.on('data', (data) => console.log(`[backend.exe stdout]: ${data}`));
-      pyProcess.stderr?.on('data', (data) => console.error(`[backend.exe stderr]: ${data}`));
-      pyProcess.on('close', (code) => console.log(`[backend.exe] exited with code ${code}`));
+      pyProcess.stdout?.on('data', (data) => console.log(`[backend stdout]: ${data}`));
+      pyProcess.stderr?.on('data', (data) => console.error(`[backend stderr]: ${data}`));
+      pyProcess.on('close', (code) => console.log(`[backend] exited with code ${code}`));
     } else {
       console.error('Backend executable not found at:', backendExecutable);
     }
   }
 }
+
 
 const settingsPath = path.join(app.getPath('userData'), 'settings.json');
 

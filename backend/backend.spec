@@ -1,12 +1,34 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+from PyInstaller.utils.hooks import collect_all
+
+datas = []
+binaries = []
+hiddenimports = [
+    'uvicorn.loops',
+    'uvicorn.loops.auto',
+    'uvicorn.loops.asyncio',
+    'uvicorn.protocols',
+    'uvicorn.protocols.http',
+    'uvicorn.protocols.http.auto',
+    'uvicorn.protocols.http.h11_impl',
+    'uvicorn.lifespan',
+    'uvicorn.lifespan.on',
+    'uvicorn.logging',
+]
+
+for pkg in ['uvicorn', 'fastapi', 'starlette', 'openai', 'httpx', 'pydantic', 'pypdf']:
+    tmp_datas, tmp_binaries, tmp_hiddenimports = collect_all(pkg)
+    datas += tmp_datas
+    binaries += tmp_binaries
+    hiddenimports += tmp_hiddenimports
 
 a = Analysis(
     ['main.py'],
     pathex=[],
-    binaries=[],
-    datas=[],
-    hiddenimports=[],
+    binaries=binaries,
+    datas=datas,
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -42,3 +64,4 @@ coll = COLLECT(
     upx_exclude=[],
     name='backend',
 )
+

@@ -228,8 +228,11 @@ async def parse_document(file: UploadFile = File(...)):
     return {"text": text.strip(), "filename": filename}
 
 if __name__ == "__main__":
+    import multiprocessing
+    multiprocessing.freeze_support()
     import uvicorn
     if getattr(sys, 'frozen', False):
         uvicorn.run(app, host="127.0.0.1", port=8000, log_config=None)
     else:
         uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+

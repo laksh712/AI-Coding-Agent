@@ -37,7 +37,8 @@ jobs:
       - name: Build Python Backend Executable
         working-directory: backend
         run: |
-          pyinstaller -y --onedir --noconsole --name backend --distpath build_python/dist --workpath build_python/build main.py
+          pyinstaller -y --distpath build_python/dist --workpath build_python/build backend.spec
+
 
       - name: Install Node.js Dependencies
         run: npm ci
