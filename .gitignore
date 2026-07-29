@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.pnpm-store
+
+# Builds & Outputs
+dist/
+dist-electron/
+release/
+
+# Python Virtual Environment & Cache
+backend/venv/
+backend/.venv/
+**/__pycache__/
+*.pyc
+
+# Local Environment & Settings
+.env
+.env.local
+*.log
+
+# OS & IDE junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
