@@ -43,6 +43,8 @@ jobs:
         run: npm ci
 
       - name: Build & Package Electron App
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run dist
 
       - name: Upload Build Artifacts

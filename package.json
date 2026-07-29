@@ -9,7 +9,7 @@
     "dev:backend": "python -m uvicorn backend.main:app --reload --port 8000",
     "dev": "concurrently -n \"react,electron,backend\" -c \"blue,green,magenta\" \"npm run dev:react\" \"wait-on http://localhost:5173 && npm run dev:electron\" \"npm run dev:backend\"",
     "build": "tsc --skipLibCheck && vite build && tsc electron/main.ts electron/preload.ts --outDir dist-electron --skipLibCheck",
-    "dist": "npm run build && electron-builder",
+    "dist": "npm run build && electron-builder --publish never",
     "preview": "vite preview"
   },
   "build": {
