@@ -513,7 +513,6 @@ Rules:
               onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
               type="button"
               className="p-1.5 hover:bg-surface rounded-lg text-textMuted hover:text-white transition-colors"
-              title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -531,7 +530,6 @@ Rules:
                   ? 'bg-primary/10 text-primary border border-primary/20 active-glow'
                   : 'text-textMuted hover:bg-surface/50 hover:text-textMain'
               }`}
-              title="Interview Room"
             >
               <Mic className="h-4 w-4 shrink-0" />
               {!isSidebarCollapsed && <span>Interview Room</span>}
@@ -546,7 +544,6 @@ Rules:
                   ? 'bg-primary/10 text-primary border border-primary/20 active-glow'
                   : 'text-textMuted hover:bg-surface/50 hover:text-textMain'
               }`}
-              title="Session History"
             >
               <History className="h-4 w-4 shrink-0" />
               {!isSidebarCollapsed && <span>Session History</span>}
@@ -561,7 +558,6 @@ Rules:
                   ? 'bg-primary/10 text-primary border border-primary/20 active-glow'
                   : 'text-textMuted hover:bg-surface/50 hover:text-textMain'
               }`}
-              title="Settings"
             >
               <SettingsIcon className="h-4 w-4 shrink-0" />
               {!isSidebarCollapsed && <span>Settings</span>}
@@ -587,7 +583,6 @@ Rules:
                 className={`w-full flex items-center bg-red-600 hover:bg-red-500 text-white font-medium rounded-xl transition-all shadow-lg ${
                   isSidebarCollapsed ? 'justify-center p-3' : 'space-x-3 px-4 py-3 text-sm'
                 }`}
-                title="Stop Listening"
               >
                 <MicOff className="h-4 w-4 shrink-0 text-white" />
                 {!isSidebarCollapsed && <span>Stop Listening</span>}
@@ -600,7 +595,6 @@ Rules:
                 className={`w-full flex items-center bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-medium rounded-xl transition-all shadow-lg ${
                   isSidebarCollapsed ? 'justify-center p-3' : 'space-x-3 px-4 py-3 text-sm'
                 }`}
-                title="Start Listening"
               >
                 <Mic className="h-4 w-4 shrink-0 text-white" />
                 {!isSidebarCollapsed && <span>Start Listening</span>}
@@ -619,7 +613,6 @@ Rules:
                   ? 'bg-blue-500/10 border-blue-500/30 text-blue-400 active-glow'
                   : 'bg-surface border-border text-textMuted hover:text-white'
               }`}
-              title="Toggle microphone audio capture for yourself"
             >
               {captureMic ? (
                 <Mic className="h-4 w-4 shrink-0" />
@@ -641,7 +634,6 @@ Rules:
                   ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 active-glow'
                   : 'bg-surface border-border text-textMuted hover:text-white'
               }`}
-              title="Toggle system audio capture for interviewer"
             >
               <Volume2 className="h-4 w-4 shrink-0" />
               {!isSidebarCollapsed && <span>{captureInterviewer ? 'Interviewer: ON' : 'Interviewer: MUTED'}</span>}
@@ -721,7 +713,6 @@ Rules:
                   }
                 }}
                 className="w-20 accent-primary h-1 rounded-lg bg-border appearance-none"
-                title={`Adjust window opacity: ${Math.round(opacity * 100)}%`}
               />
               <span className="text-[10px] font-semibold text-textMuted w-7 text-right">{Math.round(opacity * 100)}%</span>
             </div>
@@ -741,7 +732,6 @@ Rules:
                   ? 'bg-red-500/10 border-red-500/30 text-red-400 active-glow'
                   : 'bg-surface border-border text-textMuted hover:text-white'
               }`}
-              title="Stealth Mode: Prevents this app window from being seen in screen shares (e.g. Zoom, Google Meet)"
             >
               <span>{stealthMode ? '🔒 Screen Hidden' : '🔓 Share Visible'}</span>
             </button>
@@ -761,7 +751,6 @@ Rules:
                   ? 'bg-purple-500/20 border-purple-500/40 text-purple-300 active-glow'
                   : 'bg-surface border-border text-textMuted hover:text-white'
               }`}
-              title="Click-Through Mode (Alt+Shift+X): Allows mouse clicks & typing to pass directly into the browser/compiler behind the overlay!"
             >
               <span>{isClickThrough ? '🎯 Click-Through: ON (Alt+Shift+X)' : '🖱️ Click-Through: OFF'}</span>
             </button>
@@ -776,9 +765,6 @@ Rules:
                     ? 'bg-blue-500/10 border-blue-500/30 text-blue-400 active-glow'
                     : 'bg-amber-500/10 border-amber-500/30 text-amber-400 active-glow'
                 }`}
-                title={showOsCursor 
-                  ? "OS Cursor Visible: Standard mouse cursor stays visible everywhere (prevents screen recording cursor flicker/pop)." 
-                  : "Stealth Cursor (Hidden): OS cursor hides over app window and displays candidate-only simulated pointer."}
               >
                 <span>{showOsCursor ? '🖱️ OS Cursor: Shown' : '👁️ OS Cursor: Hidden'}</span>
               </button>
@@ -844,7 +830,6 @@ Rules:
                                 <button
                                   onClick={() => copyToClipboard(c.response, c.id)}
                                   className="text-textMuted hover:text-textMain transition-colors"
-                                  title="Copy response"
                                 >
                                   {copiedId === c.id ? (
                                     <Check className="h-3.5 w-3.5 text-green-500" />
@@ -900,7 +885,6 @@ Rules:
                       onClick={() => setAttachedFile(null)}
                       type="button"
                       className="p-1 hover:bg-surface rounded text-textMuted hover:text-white transition-colors"
-                      title="Remove attachment"
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -925,7 +909,6 @@ Rules:
                     onClick={() => document.getElementById('file-upload-input')?.click()}
                     type="button"
                     className="p-2 text-textMuted hover:text-white hover:bg-surface/50 rounded-lg transition-colors select-none mr-1 shrink-0 animate-pulse"
-                    title="Upload image or document (.pdf, .txt, .js, etc.)"
                   >
                     <Paperclip className="h-4 w-4" />
                   </button>
