@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Mic, 
   MicOff, 
@@ -236,7 +236,7 @@ export default function App() {
   };
 
   const handleStopCapture = async () => {
-    if (!isListening) return;
+    if (!isListeningRef.current) return;
 
     setStatusMessage('Processing audio speech...');
     setIsProcessing(true);
@@ -351,19 +351,45 @@ Rules:
   const isProcessingRef = useRef(isProcessing);
   isProcessingRef.current = isProcessing;
 
-  useEffect(() => {
-    if (window.electronAPI?.onToggleListening) {
-      const unsubscribe = window.electronAPI.onToggleListening(() => {
-        if (isProcessingRef.current) return;
-        if (isListeningRef.current) {
-          handleStopCapture();
-        } else {
-          handleStartCapture();
-        }
-      });
-      return () => unsubscribe();
+  const handleStartCaptureRef = useRef(handleStartCapture);
+  handleStartCaptureRef.current = handleStartCapture;
+
+  const handleStopCaptureRef = useRef(handleStopCapture);
+  handleStopCaptureRef.current = handleStopCapture;
+
+  const toggleListening = useCallback(() => {
+    if (isProcessingRef.current) return;
+    if (isListeningRef.current) {
+      handleStopCaptureRef.current();
+    } else {
+      handleStartCaptureRef.current();
     }
-  }, [handleStartCapture, handleStopCapture]);
+  }, []);
+
+  useEffect(() => {
+    // 1. Electron IPC global shortcut listener
+    let unsubscribe: (() => void) | undefined;
+    if (window.electronAPI?.onToggleListening) {
+      unsubscribe = window.electronAPI.onToggleListening(() => {
+        toggleListening();
+      });
+    }
+
+    // 2. DOM Keydown shortcut listener (Alt+Shift+S, Ctrl+Shift+S, Ctrl+Alt+S)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isS = e.key.toLowerCase() === 's';
+      if (isS && ((e.altKey && e.shiftKey) || (e.ctrlKey && e.shiftKey) || (e.ctrlKey && e.altKey))) {
+        e.preventDefault();
+        toggleListening();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      if (unsubscribe) unsubscribe();
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [toggleListening]);
 
   const handleSendManualText = async (e: React.FormEvent) => {
     e.preventDefault();

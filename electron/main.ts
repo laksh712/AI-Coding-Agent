@@ -208,12 +208,15 @@ app.whenReady().then(() => {
     }
   });
 
-  // Register Alt+Shift+S shortcut to toggle Start/Stop Listening
-  globalShortcut.register('Alt+Shift+S', () => {
+  // Register shortcuts to toggle Start/Stop Listening
+  const toggleListeningHandler = () => {
     if (mainWindow) {
       mainWindow.webContents.send('toggle-listening');
     }
-  });
+  };
+  globalShortcut.register('Alt+Shift+S', toggleListeningHandler);
+  globalShortcut.register('Ctrl+Shift+S', toggleListeningHandler);
+  globalShortcut.register('Control+Alt+S', toggleListeningHandler);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
