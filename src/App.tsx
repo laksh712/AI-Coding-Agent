@@ -288,10 +288,9 @@ RULES FOR ANSWERS:
 5. NO HEAVY MARKDOWN HEADERS: Do not use markdown headers like '#', '##', '###'. Use bold labels and bullet points instead.`
       };
 
-      // Construct current context
+      // Construct current context (only current question for focused, direct answers)
       const chatContext: ChatMessage[] = [
         systemPrompt,
-        ...transcripts.map(t => ({ role: 'user' as const, content: t.text })),
         { role: 'user', content: text.trim() }
       ];
 
@@ -466,10 +465,9 @@ RULES FOR ANSWERS:
 5. NO HEAVY MARKDOWN HEADERS: Do not use markdown headers like '#', '##', '###'. Use bold labels and bullet points instead.`
       };
 
-      // Construct current context
+      // Construct current context (only current question for focused, direct answers)
       const chatContext: ChatMessage[] = [
         systemPrompt,
-        ...transcripts.map(t => ({ role: 'user' as const, content: t.text })),
         { role: 'user', content: userContent }
       ];
 
