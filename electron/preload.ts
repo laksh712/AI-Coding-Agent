@@ -14,4 +14,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
       ipcRenderer.removeListener('click-through-toggled', handler);
     };
   },
+  onToggleListening: (callback: () => void) => {
+    const handler = () => callback();
+    ipcRenderer.on('toggle-listening', handler);
+    return () => {
+      ipcRenderer.removeListener('toggle-listening', handler);
+    };
+  },
 });

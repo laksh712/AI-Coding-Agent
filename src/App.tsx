@@ -345,6 +345,26 @@ Rules:
     }
   };
 
+  const isListeningRef = useRef(isListening);
+  isListeningRef.current = isListening;
+
+  const isProcessingRef = useRef(isProcessing);
+  isProcessingRef.current = isProcessing;
+
+  useEffect(() => {
+    if (window.electronAPI?.onToggleListening) {
+      const unsubscribe = window.electronAPI.onToggleListening(() => {
+        if (isProcessingRef.current) return;
+        if (isListeningRef.current) {
+          handleStopCapture();
+        } else {
+          handleStartCapture();
+        }
+      });
+      return () => unsubscribe();
+    }
+  }, [handleStartCapture, handleStopCapture]);
+
   const handleSendManualText = async (e: React.FormEvent) => {
     e.preventDefault();
     if ((!manualTextInput.trim() && !attachedFile) || isProcessing) return;

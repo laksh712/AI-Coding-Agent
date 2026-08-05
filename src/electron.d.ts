@@ -6,6 +6,7 @@ export interface ElectronAPI {
   captureScreen: () => Promise<{ success: boolean; dataUrl?: string; error?: string }>;
   setIgnoreMouseEvents: (ignore: boolean) => Promise<{ success: boolean; error?: string }>;
   onClickThroughToggled: (callback: (ignore: boolean) => void) => () => void;
+  onToggleListening: (callback: () => void) => () => void;
 }
 
 declare global {
